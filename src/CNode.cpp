@@ -13,13 +13,14 @@ TIME 	CNode::ProcessChildren()
 	return maxTime;
 }
 
-void CNode::AddChild(CNode* node)
+void CNode::AddChild(CNodePtr pNode)
 {
-	m_children.push_back(node);
+	m_children.push_back(pNode);
+	pNode->SetParent(this);
 }
 
 
-void CNode::SetParent(CNode* node)
+void CNode::SetParent(CNode* pNode)
 {
-	m_parent = node;
+	m_parent = pNode;
 }

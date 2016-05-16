@@ -11,7 +11,7 @@ TIME CDBMSC::Query()
     TIME allStepTime = 0;
     do
     {
-			TIME maxTime = 0;
+      TIME maxTime = 0;
       allStepTime = 0;
       for(size_t nodeIdx = 0; nodeIdx < m_nodes.size(); nodeIdx++)
       {

@@ -5,24 +5,25 @@
 
 class CNode
 {
+typedef std::shared_ptr<CNode> CNodePtr;
 public:
-		CNode() 					= default;
-		~CNode() 					= default;
+					CNode			() 			= default;
+					~CNode			() 			= default;
 public:
-		CNode(CNode&) 				= delete;
-		CNode(CNode&&) 				= delete;
+					CNode			(CNode&) 		= default;
+					CNode			(CNode&&) 		= default;
 public:
-		CNode& operator=(CNode&) 		= delete;
-		CNode& operator=(CNode&&) 	= delete;
+					CNode& operator=	(CNode&) 		= default;
+					CNode& operator=	(CNode&&) 		= default;
 public:
-	TIME 	Process()					= 0;
+	TIME 				Process			()			= 0;
 public:
-	void	AddChild(CNode*);
+	void				AddChild		(CNodePtr);
 protected:
-	void	SetParent(CNode*);
-	TIME	ProcessChildren();
+	void				SetParent		(CNode*);
+	TIME				ProcessChildren		();
 private:
-	size_t 			m_id;
-	std::vector<CNode*> 	m_children;
-	CNode* 			m_parent;
+	size_t 				m_id;
+	std::vector<CNodePtr> 		m_children;
+	CNode* 				m_parent;
 };
