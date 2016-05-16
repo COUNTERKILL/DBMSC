@@ -1,23 +1,28 @@
 #pragma once
 
 #include <vector>
-#include "CNode.h"
+#include "DBMSC_defs.h"
 
-class CDBMSC
+class CNode
 {
-  typedef int TIME;
 public:
-  CDBMSC() = default;
-	~CDBMSC() = default;
+		CNode() 					= default;
+		~CNode() 					= default;
 public:
-	CDBMSC(CDBMSC&) = delete;
-	CDBMSC(CDBMSC&&) = delete;
+		CNode(CNode&) 				= delete;
+		CNode(CNode&&) 				= delete;
 public:
-  CDBMSC& operator=(CDBMSC&) = delete;
-  CDBMSC& operator=(CDBMSC&&) = delete;
+		CNode& operator=(CNode&) 		= delete;
+		CNode& operator=(CNode&&) 	= delete;
 public:
-  TIME Query();
+	TIME 	Process()					= 0;
+public:
+	void	AddChild(CNode*);
+protected:
+	void	SetParent(CNode*);
+	TIME	ProcessChildren();
 private:
-	std::vector<Node> m_nodes;
-	std::size_t m_steps_count;
+	size_t 			m_id;
+	std::vector<CNode*> 	m_children;
+	CNode* 			m_parent;
 };

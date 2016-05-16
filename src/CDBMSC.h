@@ -1,14 +1,13 @@
 #pragma once
 
 #include <vector>
-#include "CNode.h"
+
 
 class CDBMSC
 {
-  typedef int TIME;
 public:
   CDBMSC() = default;
-	~CDBMSC() = default;
+  ~CDBMSC() = default;
 public:
 	CDBMSC(CDBMSC&) = delete;
 	CDBMSC(CDBMSC&&) = delete;
