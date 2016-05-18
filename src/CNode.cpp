@@ -2,7 +2,7 @@
 #include <algorithm>
 
 
-TIME 	CNode::ProcessChildren()
+TIME CNode::ProcessChildren()
 {
 	TIME maxTime = 0;
 	for(auto& pChildNode : m_children)
@@ -23,4 +23,10 @@ void CNode::AddChild(CNodePtr pNode)
 void CNode::SetParent(CNode* pNode)
 {
 	m_parent = pNode;
+}
+
+void CNode::ReceivePacket(CPacket&& packet)
+{
+	m_packets.push_back(std::move(packet));
+	return;
 }
