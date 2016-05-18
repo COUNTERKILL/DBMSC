@@ -15,8 +15,14 @@ TIME CWorker::Process()
     if(!m_queryExecuted)
     {
         m_queryExecuted = true;
+    if(m_step == 1)
+    {
+        m_currentIndicesCount = 1;
+        std::size_t firstRelationSize = Config::GetRelationSize(0) / CWorker::m_count;
+        m_currentIndexSize = firstRelationSize;
+    }
         // Calculate join time
-        std::size_t nextRelationSize = Config::GetRelationSize(m_step) / m_count;
+        std::size_t nextRelationSize = Config::GetRelationSize(m_step) / CWorker::m_count;
         TIME joinTime = m_currentIndexSize + nextRelationSize;
         // sending packets
         for(auto& id : CWorker::m_workers)
@@ -27,7 +33,7 @@ TIME CWorker::Process()
             SendPacket(std::move(CPacket(m_id, id, packetWidth, packetLength)));
         }
         m_currentIndicesCount = packetWidth;
-        m_currentIndexSize = packetLength * m_count;
+        m_currentIndexSize = packetLength * CWorker::m_count;
         return joinTime;
     }
     if(m_packetsReceivedCount == CWorker::count) // packets from all nodes received
