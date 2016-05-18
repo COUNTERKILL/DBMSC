@@ -31,26 +31,44 @@ void CDCHTree::LoadFromFile(std::string fileName)
 		line = line.substr(line.find("devType=")+9);
 		std::string devType =line.substr(0, line.find("\""));
 		
-		std::shared_ptr<CNode> pNode;
+		std::shared_ptr<CNode> pNode = nullptr;
 		
 		if(devType == "S")
-			pNode = std::make_shared<CSwitch>();
+		{
+			line = line.substr(line.find("speed=")+7);
+			std::size_t speed = std::stoi(line.substr(0, line.find("\"")));
+			pNode = std::make_shared<CSwitch>(id, speed);
+		}
 		if(devType == "W")
-			pNode = std::make_shared<CWorker>();
+		{
+			line = line.substr(line.find("perfomance=")+12);
+			float perfomance = std::stof(line.substr(0, line.find("\"")));
+			pNode = std::make_shared<CWorker>(id, perfomance);
+		}
 		if(devType == "C")
-			pNode = std::make_shared<CCoordinator>();
+		{
+			line = line.substr(line.find("perfomance=")+12);
+			float perfomance = std::stof(line.substr(0, line.find("\"")));
+			pNode = std::make_shared<CCoordinator>(id, perfomance);
+		}
 		if(devType == "L")
-			pNode = std::make_shared<CLine>();
-		
+		{
+			line = line.substr(line.find("weight=")+8);
+			std::size_t weight = std::stoi(line.substr(0, line.find("\"")));
+			pNode = std::make_shared<CLine>(id, weight);
+		}
+		AddNode(pNode, parentId);
 	}
+	return;
 }
 
 CNode& CDCHTree::FindNode(size_t id)
 {
-	
+	if(m_rootNode == nullptr)
+		throw "Tree is empty. Node not founded";
+	if(
 }
-void CDCHTree::AddNode(CNode *node, size_t parentId)
+void CDCHTree::AddNode(CNode::CNodePtr pNode, size_t parentId)
 {
-	auto pNode = std::make_shared<CNode>(node);
 	FindNode(parentId).AddChild(pNode);
 }

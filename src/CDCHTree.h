@@ -19,9 +19,9 @@ public:
 	TIME 			Process				();
 public:
 	void 			LoadFromFile			(std::string fileName);
-public:
+private:
 	CNode& 			FindNode			(size_t id);
 	void 			AddNode				(CNode::CNodePtr pNode, size_t parentId);
 private:
-	CNode::CNodePtr 	m_rootNode;
+	CNode::CNodePtr 	m_rootNode = nullptr;
 };
