@@ -7,23 +7,38 @@ class CNode
 {
 typedef std::shared_ptr<CNode> CNodePtr;
 public:
-					CNode			() 			= default;
-					~CNode			() 			= default;
+                                        CNode           (std::size_t id)
+                                                            m_id(id) {};
+    virtual                             ~CNode          ()          = default;
 public:
-					CNode			(CNode&) 		= default;
-					CNode			(CNode&&) 		= default;
+                                        CNode           (CNode&)    = default;
+                                        CNode           (CNode&&)   = default;
 public:
-					CNode& operator=	(CNode&) 		= default;
-					CNode& operator=	(CNode&&) 		= default;
+            CNode&                      operator=       (CNode&)    = default;
+            CNode&                      operator=       (CNode&&)   = default;
 public:
-	TIME 				Process			()			= 0;
+    virtual	TIME                        Process         ()          = 0;
 public:
-	void				AddChild		(CNodePtr);
+            void                        AddChild        (CNodePtr);
+public:
+    virtual TIME                        SendPacket      (CPacket&&) = 0;
+public:
+    virtual void                        StartStep       ()          { m_step++; };     
 protected:
-	void				SetParent		(CNode*);
-	TIME				ProcessChildren		();
+            void                        ReceivePacket   (CPacket&&);
+protected:
+            void                        SetParent       (CNode*);
+            TIME                        ProcessChildren	();
+protected:
+            CNode*                      FindNode        (std::size_t searcherId, std::size_t id);
+protected:
+            std::size_t                 m_step      = 0;
+            std::size_t                 m_id;
+            CNode*                      m_parent    = nullptr;
 private:
-	size_t 				m_id;
-	std::vector<CNodePtr> 		m_children;
-	CNode* 				m_parent;
+         
+            std::vector<CNodePtr>       m_children;
+            std::vector<CPacket>        m_packets;
+
+            
 };
