@@ -21,7 +21,7 @@ public:
 public:
             void                        AddChild        (CNodePtr);
 public:
-            TIME                        SendPacket      (CPacket&&) = 0;
+    virtual TIME                        SendPacket      (CPacket&&) = 0;
 public:
     virtual void                        StartStep       ()          { m_step++; };     
 protected:
@@ -30,9 +30,11 @@ protected:
             void                        SetParent       (CNode*);
             TIME                        ProcessChildren	();
 protected:
+            CNode*                      FindNode        (std::size_t searcherId, std::size_t id);
+protected:
             std::size_t                 m_step      = 0;
             std::size_t                 m_id;
-            CNode*                      m_parent;
+            CNode*                      m_parent    = nullptr;
 private:
          
             std::vector<CNodePtr>       m_children;

@@ -30,3 +30,23 @@ void CNode::ReceivePacket(CPacket&& packet)
 	m_packets.push_back(std::move(packet));
 	return;
 }
+
+CNode* CNode::FindNode(std::size_t searcherId, std::size_t id)
+{
+    if(m_id == id) return this;
+    CNode *res = nullptr;
+    for(auto& pNode : m_children)
+    {
+        if(pNode->m_id != searcherId)
+            res = FindNode(this->m_id, id);
+        if(res)
+            return res;
+    }
+    if((m_parent != nullptr) && (m_parent->m_id != searcherId))
+    {
+        res = FindNode(this->m_id, id);
+        if(res)
+            return res;
+    }
+    return nullptr;
+}
