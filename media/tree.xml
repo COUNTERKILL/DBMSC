@@ -2,7 +2,7 @@
 <!DOCTYPE node SYSTEM "DCHinput.dtd">
 <!--Database Multiprocessor Markup Language (DMML)-->
 <DCH-Tree name="7_NODES">
-<node id="99999" parentId=""  devType="S" weight="10"/>
+<node id="99999" parentId="0"  devType="S" weight="10"/>
 <node id="20000" parentId="99999"  devType="L" weight="10"/>
 <node id="10000" parentId="20000"  devType="S" weight="10"/>
 <node id="20001" parentId="10000"  devType="L" weight="10"/>
@@ -14,7 +14,7 @@
 <node id="20004" parentId="10000"  devType="L" weight="10"/>
 <node id="30004" parentId="20004"  devType="W" perfomance="1"/>
 <node id="20005" parentId="99999"  devType="L" weight="10"/>
-<node id="10001" parentId="20005"  devType="S" perfomance="1"/>
+<node id="10001" parentId="20005"  devType="S" weight="1"/>
 <node id="20006" parentId="10001"  devType="L" weight="10"/>
 <node id="30005" parentId="20006"  devType="W" perfomance="1"/>
 <node id="20007" parentId="10001"  devType="L" weight="10"/>

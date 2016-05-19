@@ -29,6 +29,7 @@ TIME CWorker::Process()
         // Calculate join time
         std::size_t nextRelationSize = Config::GetRelationSize(m_step) / CWorker::workers.size();
         TIME joinTime = m_currentIndexSize + nextRelationSize;
+        joinTime /= m_perfomance;
         // sending packets
         if(m_step == Config::GetStepsCount()) // need send to coordinator
         {
@@ -49,6 +50,7 @@ TIME CWorker::Process()
             m_currentIndicesCount = packetWidth;
             m_currentIndexSize = resSize;
         }
+        //std::cout << "Hoin time: " << joinTime << std::endl;
         return joinTime;
     }
     if(m_packetsReceivedCount == CWorker::workers.size()) // packets from all nodes received
@@ -59,7 +61,7 @@ TIME CWorker::Process()
         {
             std::size_t PCTSize = m_currentIndexSize;
             m_sortExecuted = true;
-            return std::size_t(std::log2(float(PCTSize)));
+            return std::size_t(m_currentIndicesCount*PCTSize*std::log2(float(PCTSize))/m_perfomance);
         };
             
     }

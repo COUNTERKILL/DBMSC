@@ -27,6 +27,7 @@ TIME CLine::Process()
     }
     for(auto pPacket = m_packets.begin(); pPacket != m_packets.end(); pPacket++)
     {
+        //std::cout << pPacket->GetDst() << std::endl;
         if(m_parent->FindNode(m_id, pPacket->GetDst()))
         {
             auto rpacket = *pPacket;
@@ -35,6 +36,7 @@ TIME CLine::Process()
             break;
         }
     }
+    maxTime = std::max(ProcessChildren(), maxTime);
     return maxTime;
 }
 

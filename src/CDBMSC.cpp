@@ -13,6 +13,7 @@ TIME CDBMSC::Query()
     do
     {
       allStepTime = m_tree.Process();
+      std::cout << allStepTime << std::endl;
       queryTime += allStepTime;
     } while(allStepTime != 0);
   }

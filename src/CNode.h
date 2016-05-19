@@ -35,8 +35,9 @@ public:
 public:
             CNode*                      FindNode        (std::size_t searcherId, std::size_t id);
             CNode*                      FindNode        (std::size_t id);
-protected:
+public:
             void                        SetParent       (CNode*);
+protected:
             TIME                        ProcessChildren	();
 protected:
             std::size_t                                 m_step      = 0;

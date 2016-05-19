@@ -35,6 +35,7 @@ TIME CSwitch::Process()
             break;
         }
     }
+    maxTime = std::max(ProcessChildren(), maxTime);
     return maxTime;
 }
 

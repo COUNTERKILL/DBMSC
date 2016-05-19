@@ -12,8 +12,16 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    size_t vecSize = 0;
-    CDBMSC dbmsc;
-    dbmsc.Initialize("../media/tree.xml");
-  return 0;
+    try
+    {
+        size_t vecSize = 0;
+        CDBMSC dbmsc;
+        dbmsc.Initialize("media/tree.xml");
+        std::cout << dbmsc.Query() << std::endl;
+    }
+    catch(const char* errStr)
+    {
+        cout << errStr << endl;
+    }
+    return 0;
 }

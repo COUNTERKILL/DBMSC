@@ -8,7 +8,9 @@ public:
                                             std::size_t width, std::size_t length
                                         ):
                                             m_width(width), 
-                                            m_length(length)                    {};
+                                            m_length(length) ,
+                                            m_src(src),
+                                            m_dst(dst){};
                     ~CPacket            ()                                      = default;
 public:
                     CPacket             (CPacket&)                              = default;
