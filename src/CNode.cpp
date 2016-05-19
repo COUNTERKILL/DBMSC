@@ -50,3 +50,31 @@ CNode* CNode::FindNode(std::size_t searcherId, std::size_t id)
     }
     return nullptr;
 }
+
+CNode* CNode::FindNode(std::size_t id)
+{
+    if(m_id == id) return this;
+    CNode *res = nullptr;
+    for(auto& pNode : m_children)
+    {
+        res = FindNode(this->m_id, id);
+        if(res)
+            return res;
+    }
+    if(m_parent != nullptr)
+    {
+        res = FindNode(this->m_id, id);
+        if(res)
+            return res;
+    }
+    return nullptr;
+}
+
+void CNode::StartStep()
+{
+    m_step++;
+    for(auto& pChildNode : m_children)
+    {
+        pChildNode->StartStep();
+    }
+}

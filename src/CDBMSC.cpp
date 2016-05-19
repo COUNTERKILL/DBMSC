@@ -9,21 +9,19 @@ TIME CDBMSC::Query()
   for(int step = 0; step < m_stepsCount; step++)
   {
     TIME allStepTime = 0;
+    m_tree.StartStep();
     do
     {
-      TIME maxTime = 0;
-      allStepTime = 0;
-      for(size_t nodeIdx = 0; nodeIdx < m_nodes.size(); nodeIdx++)
-      {
-        TIME currentTime = m_nodes[nodeIdx].Process();
-        allStepTime += currentTime;
-        if(maxTime < currentTime)
-          maxTime = currentTime;
-      }
-      queryTime += maxTime;
+      allStepTime = m_tree.Process();
+      queryTime += allStepTime;
     } while(allStepTime != 0);
   }
-  return queryTime;	
+  return queryTime;
 }
 
 
+void CDBMSC::Initialize(std::string fileNameDchTree)
+{
+    m_tree.LoadFromFile(fileNameDchTree);
+    m_stepsCount = 2;
+}

@@ -66,9 +66,15 @@ CNode& CDCHTree::FindNode(size_t id)
 {
 	if(m_rootNode == nullptr)
 		throw "Tree is empty. Node not founded";
-	if(
+	return *(m_rootNode->FindNode(id));
 }
 void CDCHTree::AddNode(CNode::CNodePtr pNode, size_t parentId)
 {
+    auto pCoordinator = dynamic_cast<CCoordinator*>(pNode.get());
+    if(pCoordinator) // if pNode is piinter to Coordinator node
+    {
+        CWorker::coordinatorId = pCoordinator->GetId();
+    }
 	FindNode(parentId).AddChild(pNode);
+    return;
 }

@@ -19,9 +19,10 @@ public:
 public:
     std::size_t     GetWidth            ()                                      { return m_width; };
     std::size_t     GetLength           ()                                      { return m_length; };
+    std::size_t     GetDst              ()                                      { return m_dst; };
 private:
     std::size_t     m_width             = 0;
     std::size_t     m_length            = 0;
     std::size_t     m_src               = 0;
     std::size_t     m_dst               = 0;
-}
+};

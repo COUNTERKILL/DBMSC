@@ -1,13 +1,18 @@
 #pragma once
 
 #include <vector>
+#include <list>
+#include <memory>
 #include "DBMSC_defs.h"
+#include "CPacket.h"
+
 
 class CNode
 {
+public:
 typedef std::shared_ptr<CNode> CNodePtr;
 public:
-                                        CNode           (std::size_t id)
+                                        CNode           (std::size_t id):
                                                             m_id(id) {};
     virtual                             ~CNode          ()          = default;
 public:
@@ -17,28 +22,26 @@ public:
             CNode&                      operator=       (CNode&)    = default;
             CNode&                      operator=       (CNode&&)   = default;
 public:
+            std::size_t                 GetId           ()          { return m_id; };
+public:
     virtual	TIME                        Process         ()          = 0;
 public:
             void                        AddChild        (CNodePtr);
 public:
-    virtual TIME                        SendPacket      (CPacket&&) = 0;
+    virtual TIME                        SendPacket      (CPacket&&, CNode*) = 0;
+    virtual void                        ReceivePacket   (CPacket&&);
 public:
-    virtual void                        StartStep       ()          { m_step++; };     
-protected:
-            void                        ReceivePacket   (CPacket&&);
+    virtual void                        StartStep       ();    
+public:
+            CNode*                      FindNode        (std::size_t searcherId, std::size_t id);
+            CNode*                      FindNode        (std::size_t id);
 protected:
             void                        SetParent       (CNode*);
             TIME                        ProcessChildren	();
 protected:
-            CNode*                      FindNode        (std::size_t searcherId, std::size_t id);
-protected:
-            std::size_t                 m_step      = 0;
-            std::size_t                 m_id;
-            CNode*                      m_parent    = nullptr;
-private:
-         
-            std::vector<CNodePtr>       m_children;
-            std::vector<CPacket>        m_packets;
-
-            
+            std::size_t                                 m_step      = 0;
+            std::size_t                                 m_id;
+            CNode*                                      m_parent    = nullptr;
+            std::vector<CNodePtr>                       m_children;
+            std::list<CPacket>                          m_packets;          
 };

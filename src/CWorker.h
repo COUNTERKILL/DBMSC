@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "DBMSC_defs.h"
+#include "CNode.h"
 
 class CWorker: public CNode
 {
@@ -17,9 +17,13 @@ public:
 public:
     TIME            Process			    ();
 public:
-    TIME            SendPacket		    (CPacket&&);
+    TIME            SendPacket		    (CPacket&&,CNode*);
+    void            ReceivePacket       (CPacket&&);
 public:
-    void            StartStep           ();
+    virtual void            StartStep           ();
+public:
+    static  std::size_t                 coordinatorId;
+    static  std::vector<std::size_t>    workers;
 private:
             std::size_t                 m_currentIndicesCount   = 0;
             std::size_t                 m_currentIndexSize      = 0; // for one index
@@ -28,7 +32,6 @@ private:
             std::size_t                 m_packetsReceivedCount  = 0;
             //std::size_t               m_packetsReceivedSize = 0; // for all packets in sum
             float                       m_perfomance            = 1.0f;
-    static  std::size_t                 m_count                 = 0;
-    static  std::vector<std::size_t>    m_workers               = std::vector<std::size_t>();
+
 
 };

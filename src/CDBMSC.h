@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include "CDCHTree.h"
 
 
 class CDBMSC
@@ -15,8 +15,9 @@ public:
   CDBMSC& operator=(CDBMSC&) = delete;
   CDBMSC& operator=(CDBMSC&&) = delete;
 public:
+  void Initialize(std::string fileNameDchTree);
   TIME Query();
 private:
-	std::vector<Node> m_nodes;
-	std::size_t m_steps_count;
+    CDCHTree    m_tree;
+    std::size_t m_stepsCount;
 };
