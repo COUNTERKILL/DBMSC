@@ -44,8 +44,11 @@ TIME CWorker::Process()
             std::size_t resSize = Config::GetResultSize(m_step) / CWorker::workers.size();
             for(auto& id : CWorker::workers)
             {
-                std::size_t packetLength = resSize / CWorker::workers.size();
-                SendPacket(std::move(CPacket(m_id, id, packetWidth, packetLength)), m_parent);
+                for(std::size_t i = 0; i < resSize/CWorker::workers.size(); i++)
+                {
+                    std::size_t packetLength = 1;
+                    SendPacket(std::move(CPacket(m_id, id, packetWidth, packetLength)), m_parent);
+                }
             }
             m_currentIndicesCount = packetWidth;
             m_currentIndexSize = resSize;
@@ -53,7 +56,7 @@ TIME CWorker::Process()
         //std::cout << "Hoin time: " << joinTime << std::endl;
         return joinTime;
     }
-    if(m_packetsReceivedCount == CWorker::workers.size()) // packets from all nodes received
+    if(m_packetsReceivedCount == (CWorker::workers.size()-1) * m_currentIndexSize) // packets from all nodes received
     {
         if(m_sortExecuted)
             return 0;
@@ -87,6 +90,6 @@ void CWorker::StartStep()
     CNode::StartStep();
     m_queryExecuted         = false;
     m_sortExecuted          = false;
-    m_packetsReceivedCount  = 1;
+    m_packetsReceivedCount  = 0;
     return;
 }

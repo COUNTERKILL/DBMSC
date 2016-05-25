@@ -12,32 +12,46 @@ CLine::CLine(std::size_t id, std::size_t weight):
 TIME CLine::Process()
 {
     TIME maxTime = 0;
-    for(auto& childNode : m_children)
+    if(m_packets.size() > 0)
     {
-        for(auto pPacket = m_packets.begin(); pPacket != m_packets.end(); pPacket++)
+        std::size_t packetsNeedToSend = m_width / m_packets.begin()->GetWidth();
+        for(auto& childNode : m_children)
         {
-            if(childNode->FindNode(m_id, pPacket->GetDst()))
+            for(auto pPacket = m_packets.begin(); pPacket != m_packets.end(); pPacket++)
             {
-                auto rpacket = *pPacket;
-                m_packets.erase(pPacket);
-                maxTime = std::max(SendPacket(std::move(rpacket), childNode.get()), maxTime);
-                break;
+                if(childNode->FindNode(m_id, pPacket->GetDst()))
+                {
+                    if(packetsNeedToSend)
+                    {
+                        auto rpacket = *pPacket;
+                        m_packets.erase(pPacket);
+                        maxTime = std::max(SendPacket(std::move(rpacket), childNode.get()), maxTime);
+                        packetsNeedToSend--;
+                    }
+                }
             }
         }
     }
-    for(auto pPacket = m_packets.begin(); pPacket != m_packets.end(); pPacket++)
+    if(m_packets.size() > 0)
     {
-        //std::cout << pPacket->GetDst() << std::endl;
-        if(m_parent->FindNode(m_id, pPacket->GetDst()))
+        std::size_t packetsNeedToSend = m_width / m_packets.begin()->GetWidth();
+        for(auto pPacket = m_packets.begin(); pPacket != m_packets.end(); pPacket++)
         {
-            auto rpacket = *pPacket;
-            m_packets.erase(pPacket);
-            maxTime = std::max(SendPacket(std::move(rpacket), m_parent), maxTime);
-            break;
+            //std::cout << pPacket->GetDst() << std::endl;
+            if(m_parent->FindNode(m_id, pPacket->GetDst()))
+            {
+                if(packetsNeedToSend)
+                {
+                    auto rpacket = *pPacket;
+                    m_packets.erase(pPacket);
+                    maxTime = std::max(SendPacket(std::move(rpacket), m_parent), maxTime);
+                    packetsNeedToSend--;
+                }
+            }
         }
     }
-    maxTime = std::max(ProcessChildren(), maxTime);
-    return maxTime;
+    
+    return 1;
 }
 
 TIME CLine::SendPacket(CPacket&& packet, CNode* pNode)

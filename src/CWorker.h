@@ -20,7 +20,7 @@ public:
     TIME            SendPacket		    (CPacket&&,CNode*);
     void            ReceivePacket       (CPacket&&);
 public:
-    virtual void            StartStep           ();
+    virtual void    StartStep           ();
 public:
     static  std::size_t                 coordinatorId;
     static  std::vector<std::size_t>    workers;
