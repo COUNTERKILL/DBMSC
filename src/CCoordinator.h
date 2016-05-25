@@ -18,6 +18,7 @@ public:
     TIME            Process			    ();
 public:
     TIME            SendPacket		    (CPacket&&,CNode*);
+    bool            WorkIsEmpty         ();
 protected:
     virtual void                        ReceivePacket   (CPacket&&);
 private:

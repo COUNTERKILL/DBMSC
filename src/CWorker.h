@@ -22,6 +22,8 @@ public:
 public:
     virtual void    StartStep           ();
 public:
+    bool            WorkIsEmpty         ();
+public:
     static  std::size_t                 coordinatorId;
     static  std::vector<std::size_t>    workers;
 private:
@@ -30,6 +32,7 @@ private:
             bool                        m_queryExecuted         = false;
             bool                        m_sortExecuted          = false;
             std::size_t                 m_packetsReceivedCount  = 0;
+            std::size_t                 m_packetsNeedToReceive  = 0;
             //std::size_t               m_packetsReceivedSize = 0; // for all packets in sum
             float                       m_perfomance            = 1.0f;
 

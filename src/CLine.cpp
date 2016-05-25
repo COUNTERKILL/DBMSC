@@ -1,7 +1,7 @@
 #include "CLine.h"
 #include <cmath>
 
-CLine::CLine(std::size_t id, std::size_t weight):
+CLine::CLine(std::size_t id, float weight):
                     CNode(id),
                     m_weight(weight)
 {
@@ -11,53 +11,62 @@ CLine::CLine(std::size_t id, std::size_t weight):
 
 TIME CLine::Process()
 {
-    TIME maxTime = 0;
+    TIME maxTime = 1;
     if(m_packets.size() > 0)
     {
-        std::size_t packetsNeedToSend = m_width / m_packets.begin()->GetWidth();
+        std::size_t packetsNeedToSend = m_weight / m_packets.begin()->GetWidth();
+       // std::cout << "Packets count in " << m_id << ": " << m_packets.size() << "need to send: " << packetsNeedToSend <<  std::endl;
         for(auto& childNode : m_children)
         {
-            for(auto pPacket = m_packets.begin(); pPacket != m_packets.end(); pPacket++)
+            auto pPacket = m_packets.begin();
+            while(pPacket != m_packets.end())
             {
                 if(childNode->FindNode(m_id, pPacket->GetDst()))
                 {
                     if(packetsNeedToSend)
                     {
                         auto rpacket = *pPacket;
-                        m_packets.erase(pPacket);
-                        maxTime = std::max(SendPacket(std::move(rpacket), childNode.get()), maxTime);
+                        pPacket = m_packets.erase(pPacket);
+                        SendPacket(std::move(rpacket), childNode.get());
                         packetsNeedToSend--;
                     }
                 }
+                pPacket++;
             }
         }
     }
     if(m_packets.size() > 0)
     {
-        std::size_t packetsNeedToSend = m_width / m_packets.begin()->GetWidth();
-        for(auto pPacket = m_packets.begin(); pPacket != m_packets.end(); pPacket++)
+        std::size_t packetsNeedToSend = m_weight / m_packets.begin()->GetWidth();
+       // std::cout << "Packets count in " << m_id << ": " << m_packets.size() << "need to send: " << packetsNeedToSend <<  std::endl;
+        auto pPacket = m_packets.begin();
+        while(pPacket != m_packets.end())
         {
             //std::cout << pPacket->GetDst() << std::endl;
             if(m_parent->FindNode(m_id, pPacket->GetDst()))
             {
                 if(packetsNeedToSend)
                 {
+                    //std::cout << packetsNeedToSend << std::endl;
                     auto rpacket = *pPacket;
-                    m_packets.erase(pPacket);
-                    maxTime = std::max(SendPacket(std::move(rpacket), m_parent), maxTime);
+                    pPacket = m_packets.erase(pPacket);
+                    //std::cout << "Packets count in " << pPacket << ": " << m_packets.size() << "need to send: " << packetsNeedToSend <<  std::endl;
+                    SendPacket(std::move(rpacket), m_parent);
                     packetsNeedToSend--;
                 }
             }
+            pPacket++;
         }
     }
-    
-    return 1;
+    maxTime = std::max(ProcessChildren(), maxTime);
+    return maxTime;
 }
 
 TIME CLine::SendPacket(CPacket&& packet, CNode* pNode)
 {
+   //std::cout << pNode->GetId() << std::endl;
     pNode->ReceivePacket(std::move(packet));
-    TIME time = packet.GetWidth() * packet.GetLength() * m_weight;
+    TIME time = packet.GetWidth() * packet.GetLength() / m_weight;
     return time;
 }
 
@@ -65,4 +74,11 @@ void CLine::StartStep()
 {
     CNode::StartStep();
     return;
+}
+
+bool CLine::WorkIsEmpty()
+{
+    if(!WorkIsEmptyChildren())
+        return false;
+    return (m_packets.size() == 0);
 }

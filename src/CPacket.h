@@ -3,6 +3,7 @@
 class CPacket
 {
 public:
+                    CPacket             () = default;
                     CPacket             (std::size_t src,
                                             std::size_t dst,
                                             std::size_t width, std::size_t length
@@ -13,7 +14,7 @@ public:
                                             m_dst(dst){};
                     ~CPacket            ()                                      = default;
 public:
-                    CPacket             (CPacket&)                              = default;
+                    CPacket             (const CPacket&)                              = default;
                     CPacket             (CPacket&&)                             = default;
 public:
                     CPacket& operator=  (CPacket&)                              = default;

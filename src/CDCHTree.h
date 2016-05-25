@@ -29,6 +29,7 @@ public:
                                          std::size_t parentId);
 public:
     void            StartStep           ()                      { m_rootNode->StartStep(); };
+    bool            WorkIsEmpty         ();
 private:
     CNode::CNodePtr 	m_rootNode      = nullptr;
 };

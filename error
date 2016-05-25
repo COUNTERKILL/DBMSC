@@ -1,0 +1,34 @@
+test -d ./bin || mkdir ./bin
+g++ -std=c++11 -pthread -g -fopenmp ./src/main.cpp ./src/CCoordinator.cpp ./src/CWorker.cpp ./src/CLine.cpp ./src/CSwitch.cpp ./src/CDBMSC.cpp ./src/CDCHTree.cpp ./src/CNode.cpp ./src/Config.cpp -o ./bin/main.o
+./src/CLine.cpp: In member function ‘virtual TIME CLine::Process()’:
+./src/CLine.cpp:17:71: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetWidth’
+         std::size_t packetsNeedToSend = m_weight / m_packets.begin()->GetWidth();
+                                                                       ^
+./src/CLine.cpp:24:55: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetDst’
+                 if(childNode->FindNode(m_id, pPacket->GetDst()))
+                                                       ^
+./src/CLine.cpp:40:71: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetWidth’
+         std::size_t packetsNeedToSend = m_weight / m_packets.begin()->GetWidth();
+                                                                       ^
+./src/CLine.cpp:46:50: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetDst’
+             if(m_parent->FindNode(m_id, pPacket->GetDst()))
+                                                  ^
+./src/CSwitch.cpp: In member function ‘virtual TIME CSwitch::Process()’:
+./src/CSwitch.cpp:22:79: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetWidth’
+                 std::size_t packetsNeedToSend = m_weight / m_packets.begin()->GetWidth();
+                                                                               ^
+./src/CSwitch.cpp:26:59: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetDst’
+                     if(childNode->FindNode(m_id, pPacket->GetDst()))
+                                                           ^
+./src/CSwitch.cpp:45:71: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetWidth’
+         std::size_t packetsNeedToSend = m_weight / m_packets.begin()->GetWidth();
+                                                                       ^
+./src/CSwitch.cpp:50:62: error: ‘struct std::pair<const long unsigned int, CPacket>’ has no member named ‘GetDst’
+             if(m_parent && m_parent->FindNode(m_id, pPacket->GetDst()))
+                                                              ^
+./src/CNode.cpp: In member function ‘virtual void CNode::ReceivePacket(CPacket&&)’:
+./src/CNode.cpp:45:65: error: expected ‘]’ before ‘)’ token
+         std::swap(m_packets[index], m_packets[m_packets.size()-1);
+                                                                 ^
+Makefile:11: ошибка выполнения рецепта для цели «all»
+make: *** [all] Ошибка 1
