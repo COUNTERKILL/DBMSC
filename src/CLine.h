@@ -6,7 +6,7 @@
 class CLine: public CNode
 {
 public:
-                    CLine               (std::size_t id, std::size_t weight);
+                    CLine               (std::size_t id, float weight);
                     ~CLine              ()                                  = default;
 public:
                     CLine               (CLine&)                          = default;
@@ -19,7 +19,9 @@ public:
 public:
     TIME            SendPacket          (CPacket&&, CNode*);
 public:
+    bool            WorkIsEmpty         ();
+public:
     virtual void            StartStep           ();
 private:
-    std::size_t     m_weight;
+    float     m_weight;
 };

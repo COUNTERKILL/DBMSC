@@ -39,7 +39,7 @@ void CDCHTree::LoadFromFile(std::string fileName)
 		{
 			line = line.substr(line.find("weight=")+8);
             
-			std::size_t weight = std::stoi(line.substr(0, line.find("\"")));
+			float weight = std::stof(line.substr(0, line.find("\"")));
 			pNode = std::make_shared<CSwitch>(id, weight);
 		}
 		if(devType == "W")
@@ -57,7 +57,7 @@ void CDCHTree::LoadFromFile(std::string fileName)
 		if(devType == "L")
 		{
 			line = line.substr(line.find("weight=")+8);
-			std::size_t weight = std::stoi(line.substr(0, line.find("\"")));
+			float weight = std::stoi(line.substr(0, line.find("\"")));
 			pNode = std::make_shared<CLine>(id, weight);
 		}
 		AddNode(pNode, parentId);
@@ -89,4 +89,9 @@ void CDCHTree::AddNode(CNode::CNodePtr pNode, size_t parentId)
         FindNode(parentId).AddChild(pNode);
     }
     return;
+}
+
+bool CDCHTree::WorkIsEmpty()
+{
+    return m_rootNode->WorkIsEmpty();
 }

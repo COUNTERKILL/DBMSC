@@ -17,6 +17,7 @@ CWorker::CWorker(std::size_t id, float perfomance):
 
 TIME CWorker::Process()
 {
+    //std::cout << "Workers count: " << CWorker::workers.size() << std::endl;
     if(!m_queryExecuted)
     {
         m_queryExecuted = true;
@@ -33,6 +34,7 @@ TIME CWorker::Process()
         // sending packets
         if(m_step == Config::GetStepsCount()) // need send to coordinator
         {
+            m_sortExecuted          = true;
             std::size_t packetWidth = m_currentIndicesCount + Config::GetIndicesAddition(m_step);
             std::size_t resSize = Config::GetResultSize(m_step) / CWorker::workers.size();
             std::size_t packetLength = resSize;
@@ -44,21 +46,25 @@ TIME CWorker::Process()
             std::size_t resSize = Config::GetResultSize(m_step) / CWorker::workers.size();
             for(auto& id : CWorker::workers)
             {
+                if(id==m_id)
+                    continue;
                 std::size_t packetLength = resSize / CWorker::workers.size();
                 SendPacket(std::move(CPacket(m_id, id, packetWidth, packetLength)), m_parent);
             }
             m_currentIndicesCount = packetWidth;
             m_currentIndexSize = resSize;
         }
-        //std::cout << "Hoin time: " << joinTime << std::endl;
+       // std::cout << "Hoin time: " << joinTime << std::endl;
         return joinTime;
     }
+    //std::cout << "received: " << m_packetsReceivedCount << std::endl;
     if(m_packetsReceivedCount == CWorker::workers.size()) // packets from all nodes received
     {
         if(m_sortExecuted)
             return 0;
         else
         {
+           // std::cout << "sorting" << std::endl;
             std::size_t PCTSize = m_currentIndexSize;
             m_sortExecuted = true;
             return std::size_t(m_currentIndicesCount*PCTSize*std::log2(float(PCTSize))/m_perfomance);
@@ -89,4 +95,9 @@ void CWorker::StartStep()
     m_sortExecuted          = false;
     m_packetsReceivedCount  = 1;
     return;
+}
+
+bool CWorker::WorkIsEmpty()
+{
+    return m_queryExecuted & m_sortExecuted;
 }

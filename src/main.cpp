@@ -17,7 +17,7 @@ int main(int argc, char** argv)
         size_t vecSize = 0;
         CDBMSC dbmsc;
         dbmsc.Initialize("media/tree.xml");
-        std::cout << dbmsc.Query() << std::endl;
+        std::cout << "Query time: " << dbmsc.Query() << std::endl;
     }
     catch(const char* errStr)
     {

@@ -36,6 +36,9 @@ public:
             CNode*                      FindNode        (std::size_t searcherId, std::size_t id);
             CNode*                      FindNode        (std::size_t id);
 public:
+    virtual bool                        WorkIsEmpty     ()           = 0;
+            bool                        WorkIsEmptyChildren();
+public:
             void                        SetParent       (CNode*);
 protected:
             TIME                        ProcessChildren	();

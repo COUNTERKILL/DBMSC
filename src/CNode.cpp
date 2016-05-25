@@ -27,21 +27,25 @@ void CNode::SetParent(CNode* pNode)
 
 void CNode::ReceivePacket(CPacket&& packet)
 {
+    //std::cout << GetId() << std::endl;
 	m_packets.push_back(std::move(packet));
 	return;
 }
 
 CNode* CNode::FindNode(std::size_t searcherId, std::size_t id)
 {
-    //std::cout << m_id << " " << std::endl;
+    //std::cout << m_id  << " " << id << " " << searcherId <<  std::endl;
     if(m_id == id) return this;
+    
     CNode *res = nullptr;
     for(auto& pNode : m_children)
     {
         if(pNode->m_id != searcherId)
             res = pNode->FindNode(this->m_id, id);
         if(res)
+        {
             return res;
+        }
     }
     if((m_parent != nullptr) && (m_parent->m_id != searcherId))
     {
@@ -79,4 +83,14 @@ void CNode::StartStep()
     {
         pChildNode->StartStep();
     }
+}
+
+bool CNode::WorkIsEmptyChildren()
+{
+    for(auto& pChildNode : m_children)
+    {
+        if(!pChildNode->WorkIsEmpty())
+            return false;
+    }
+    return true;
 }

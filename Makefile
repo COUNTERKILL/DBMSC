@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-std=c++11 -pthread
+CFLAGS=-std=c++11 -pthread -g
 LDFLAGS=
 SRC_DIR=./src
 SOURCES=./src/main.cpp ./src/CCoordinator.cpp ./src/CWorker.cpp ./src/CLine.cpp ./src/CSwitch.cpp ./src/CDBMSC.cpp ./src/CDCHTree.cpp ./src/CNode.cpp ./src/Config.cpp

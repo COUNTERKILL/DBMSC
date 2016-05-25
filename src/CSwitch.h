@@ -6,7 +6,7 @@
 class CSwitch: public CNode
 {
 public:
-                    CSwitch             (std::size_t id, std::size_t weight);
+                    CSwitch             (std::size_t id, float weight);
                     ~CSwitch            ()                                  = default;
 public:
                     CSwitch             (CSwitch&)                          = default;
@@ -19,7 +19,9 @@ public:
 public:
     TIME            SendPacket		    (CPacket&&, CNode*);
 public:
-    virtual void            StartStep           ();
+    virtual void    StartStep           ();
+public:
+    bool            WorkIsEmpty         ();
 private:
-    std::size_t     m_weight;
+    float     m_weight;
 };

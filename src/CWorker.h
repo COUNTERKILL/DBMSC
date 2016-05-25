@@ -22,6 +22,8 @@ public:
 public:
     virtual void            StartStep           ();
 public:
+    bool            WorkIsEmpty         ();
+public:
     static  std::size_t                 coordinatorId;
     static  std::vector<std::size_t>    workers;
 private:

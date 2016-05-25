@@ -23,3 +23,7 @@ void CCoordinator::ReceivePacket(CPacket&& packet)
     return;
 }
 
+bool CCoordinator::WorkIsEmpty()
+{
+    return true;
+}
