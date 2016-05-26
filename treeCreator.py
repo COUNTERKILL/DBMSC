@@ -10,7 +10,7 @@ for i in range(0, 15):
 	print '<node id="' + str(parent) + '" parentId="' + str(20000+i) + '"  devType="S" weight="2147"/>'
 	for lId in range (0, 10):
 		print '<node id="' +  str(20000+15 + 10 * i + lId) +'" parentId="' + str(parent) +'"  devType="L" weight="2147"/>'
-		print '<node id="' + str(30000+10*i + lId) + '" parentId="'+ str(20000+15 + 10 * i + lId) + '"  devType="W" perfomance="378"/>'
+		print '<node id="' + str(30000+120*i + lId) + '" parentId="'+ str(20000+15 + 10 * i + lId) + '"  devType="W" perfomance="378"/>'
 
 	
 	

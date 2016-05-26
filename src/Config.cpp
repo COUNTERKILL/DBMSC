@@ -22,7 +22,7 @@ std::size_t Config::GetResultSize(std::size_t step)
     switch(step)
     {
         case 1:
-            return 315000;
+            return 500000;
             break;
         case 2:
             return 1000000;
